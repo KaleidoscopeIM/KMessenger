@@ -1,29 +1,18 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
-
 ### What is this repository for? ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* This is an app for instant messaging with unique UI and powerful background support.
+* Version : currently we just started up this application with version 1.0
 
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
+Anybody can clone either from source tree or can import in eclipse directly by importing with a new git project.
+ 
 ### Contribution guidelines ###
 
-* Writing tests
-* Code review
-* Other guidelines
+Anybody can contribute in this project by writing code or test cases.
 
 ### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+for any clarification feel free to contact @ iamgautamsaini@gmail.com
