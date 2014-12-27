@@ -18,7 +18,7 @@ public class MessagePopupWindow {
 	private Context contextPopup;
 	private Drawable background=null;
 	private PopupWindow popup=null;
-	private View rootView;
+	private View kRootView;
 	private WindowManager winManager;
 	private LayoutInflater inflator=null;
 	
@@ -46,7 +46,7 @@ public class MessagePopupWindow {
 	}
 	public void init()
 	{
-		if(rootView==null)
+		if(kRootView==null)
 		{
 			Toast.makeText(contextPopup, "unable to create popUp", Toast.LENGTH_SHORT);
 		}
@@ -56,7 +56,7 @@ public class MessagePopupWindow {
 			popup.setFocusable(true);
 			popup.setTouchable(true);
 			popup.setOutsideTouchable(true);
-			popup.setContentView(rootView);
+			//popup.setContentView(rootView);
 			
 	}
 	public void postShow()
@@ -75,9 +75,10 @@ public class MessagePopupWindow {
 		inflator=(LayoutInflater)contextPopup.getSystemService(contextPopup.LAYOUT_INFLATER_SERVICE);
 		//setContentView(inflator.inflate(layoutID, viewGroup));
 	}
-	public void setRootView(View root)
+	public void setViewInPopup(View v)
 	{
-		this.rootView=root;
+		kRootView=v;
+		popup.setContentView(kRootView);
 	}
 
 }

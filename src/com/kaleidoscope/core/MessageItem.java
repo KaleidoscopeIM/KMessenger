@@ -1,52 +1,43 @@
 package com.kaleidoscope.core;
 
+import com.kaleidoscope.kmessenger.R.drawable;
+
+import android.R.string;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.widget.Button;
 import android.widget.EditText;
 
 public class MessageItem {
 	private int msgID=-1;
 	private String sender;
-	private String senderMSG;
-	private String receivedMSG;
-	private EditText enterMSG;
-	private Bitmap thumbnail;
+	private String sentMSG=null;
+	private String receivedMSG=null;
+	private EditText enterMSG=null;
+	private Drawable icon;
 	private Button sendButton;
 	private boolean isSticky;
 	private boolean isSelected;
-	public MessageItem(int ID,String senderM,String receiveM,Bitmap thumb, boolean sticky, boolean selected) {
+	public MessageItem(int ID,String sender, Drawable icon, EditText ET, Button btn) {
 		this.sender=sender;
-		this.senderMSG=senderM;
-		this.receivedMSG=receiveM;
 		this.msgID=ID;
-		this.thumbnail=thumb;
-		
-		this.isSticky=sticky;
-		this.isSelected=selected;
-		
-	}
-	public MessageItem(int ID,EditText editText)
-	{
-		this.enterMSG=editText;
-	}
-	public MessageItem(int ID, Button btn)
-	{
+		this.icon=icon;
+		this.enterMSG=ET;
 		this.sendButton=btn;
 	}
-	public MessageItem(int ID, String sender,String sendM ,String RecM )
+	public MessageItem(int ID ,String sendM ,String RecM )
 	{
 		this.msgID=ID;
-		this.sender=sender;
-		this.senderMSG=sendM;
+		this.sentMSG=sendM;
 		this.receivedMSG=RecM;
 	}
-	public MessageItem(EditText editText)
+	public String getSentMSG()
 	{
-		this.enterMSG=editText;
+		return sentMSG;
 	}
-	public MessageItem(Button button)
+	public String getReceivedMSG()
 	{
-		this.sendButton=button;
+		return receivedMSG;
 	}
 	//get and set for selected messages
 	public void setSelected()
@@ -67,13 +58,13 @@ public class MessageItem {
 		return isSticky;
 	}
 	//get and set for bitmap
-	public void setBitmap(Bitmap thumb)
+	public void setIcon(Drawable thumb)
 	{
-		this.thumbnail=thumb;
+		this.icon=thumb;
 	}
-	public Bitmap getBitmap()
+	public Drawable getBitmap()
 	{
-		return this.thumbnail;
+		return this.icon;
 	}
 	//get and set for ID
 	public void setID(int id)
