@@ -1,5 +1,6 @@
 package com.kaleidoscope.core;
 
+import android.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -17,9 +18,9 @@ import android.widget.Toast;
 public class MessagePopupWindow {
 	private Context contextPopup;
 	private Drawable background=null;
-	private PopupWindow popup=null;
-	private View kRootView;
-	private WindowManager winManager;
+	public PopupWindow popup=null;
+	public View kRootView;
+	public WindowManager winManager;
 	private LayoutInflater inflator=null;
 	
 	public MessagePopupWindow(Context con)
@@ -27,6 +28,7 @@ public class MessagePopupWindow {
 		this.contextPopup=con;
 		popup=new PopupWindow(contextPopup);
 		winManager=(WindowManager)contextPopup.getSystemService(contextPopup.WINDOW_SERVICE);
+		inflator=(LayoutInflater)con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		popup.setTouchInterceptor(new OnTouchListener() {
 			
 			@Override
@@ -72,7 +74,7 @@ public class MessagePopupWindow {
 	}
 	public void setPopupLayout(int layoutID)
 	{
-		inflator=(LayoutInflater)contextPopup.getSystemService(contextPopup.LAYOUT_INFLATER_SERVICE);
+		//inflator=(LayoutInflater)contextPopup.getSystemService(contextPopup.LAYOUT_INFLATER_SERVICE);
 		//setContentView(inflator.inflate(layoutID, viewGroup));
 	}
 	public void setViewInPopup(View v)
@@ -80,5 +82,6 @@ public class MessagePopupWindow {
 		kRootView=v;
 		popup.setContentView(kRootView);
 	}
+	
 
 }
