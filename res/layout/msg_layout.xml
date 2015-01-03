@@ -8,12 +8,18 @@
    	>
 
     <TextView
-        android:id="@+id/msgText"
+        android:id="@+id/msgTextLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="MSG"
-        android:layout_gravity="right"
+        android:layout_gravity="left"
         />
-    
+
+    <TextView
+        android:id="@+id/msgTextRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" 
+        android:layout_gravity="right"/>
 
 </LinearLayout>

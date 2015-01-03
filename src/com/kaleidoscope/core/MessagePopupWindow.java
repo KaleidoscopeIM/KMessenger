@@ -1,46 +1,50 @@
 package com.kaleidoscope.core;
 
-import android.R;
+import com.kaleidoscope.kmessenger.MainActivity;
+
+import com.kaleidoscope.kmessenger.R;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class MessagePopupWindow {
+public class MessagePopupWindow extends PopupWindow{
+	
 	private Context contextPopup;
 	private Drawable background=null;
-	public PopupWindow popup=null;
-	public View kRootView;
-	public WindowManager winManager;
-	private LayoutInflater inflator=null;
+	protected View kRootView;
+	private TextView kUserName;
+	private ScrollView kScrollView;
+	private LinearLayout kMSGContainer=null;
+	private EditText kEnterMSG;
+	private Button kButtonSend;
 	
 	public MessagePopupWindow(Context con)
 	{
-		this.contextPopup=con;
-		popup=new PopupWindow(contextPopup);
-		winManager=(WindowManager)contextPopup.getSystemService(contextPopup.WINDOW_SERVICE);
-		inflator=(LayoutInflater)con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		popup.setTouchInterceptor(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction()==event.ACTION_OUTSIDE)
-				{
-					popup.dismiss();
-					return true;
-				}
-				return false;
-			}
-		});
+		Log.d(MainActivity.KTAG,"constructor of MessagePopupWindow");
+		
+		contextPopup=con;
+		kRootView =MainActivity.layoutInflatorMain.inflate(R.layout.container, null);
+		kUserName=(TextView) kRootView.findViewById(R.id.userName);
+		kScrollView=(ScrollView) kRootView.findViewById(R.id.scrollView);
+		kMSGContainer=(LinearLayout) kRootView.findViewById(R.id.msgContainer);
+		kEnterMSG=(EditText) kRootView.findViewById(R.id.editTextMSG);
+		kButtonSend=(Button) kRootView.findViewById(R.id.buttonSend);
+		
+		init();
+		
 	}
 	public void preShow()
 	{
@@ -48,39 +52,96 @@ public class MessagePopupWindow {
 	}
 	public void init()
 	{
+		Log.d(MainActivity.KTAG,"inside init() method");
 		if(kRootView==null)
 		{
-			Toast.makeText(contextPopup, "unable to create popUp", Toast.LENGTH_SHORT);
-		}
-			popup.setBackgroundDrawable(new BitmapDrawable());
-			popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
-			popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-			popup.setFocusable(true);
-			popup.setTouchable(true);
-			popup.setOutsideTouchable(true);
-			//popup.setContentView(rootView);
+			Log.d(MainActivity.KTAG,"cannnot create a popup");
+			//return;
+		}else{
+			setBackgroundDrawable(new BitmapDrawable());
+			setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
+			setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+			setFocusable(true);
+			setTouchable(true);
+			setOutsideTouchable(true);
+			setContentView(kRootView);
 			
+			Log.d(MainActivity.KTAG,"init method done");
+		}
 	}
 	public void postShow()
 	{
 		
 	}
 	public void dismiss()
-	{
-		if(popup!=null)
+	{/*if(popup!=null)
 		{
 			popup.dismiss();
+		}*/
+	}
+	
+	public void addMSG(TextView item, int pos)
+	{
+		if(kMSGContainer!=null)
+		{
+			kMSGContainer.addView(item, pos);
+			Log.d(MainActivity.KTAG,"successfully added msg in contaner");
 		}
+		else
+			Log.d(MainActivity.KTAG,"kMSGContainer is null");
 	}
-	public void setPopupLayout(int layoutID)
-	{
-		//inflator=(LayoutInflater)contextPopup.getSystemService(contextPopup.LAYOUT_INFLATER_SERVICE);
-		//setContentView(inflator.inflate(layoutID, viewGroup));
+	
+	public void showPopup(int[] location) {
+		
+		Log.d(MainActivity.KTAG,"inside method showPopUP");
+		int xPosition,yPosition;
+		 
+		kRootView.measure(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		int screenHeight=MainActivity.windowManagerMain.getDefaultDisplay().getHeight();
+		int screenWidth=MainActivity.windowManagerMain.getDefaultDisplay().getWidth();
+		int rootHeight=kRootView.getMeasuredHeight();
+		int rootWidth=kRootView.getMeasuredWidth();
+		if(location[0]+rootWidth>screenWidth)
+		{
+			xPosition=screenWidth-location[0];
+		}else
+		{
+			xPosition=location[0];
+		}
+		int top=location[1];
+		int bottom=screenHeight-location[1];
+		if(top>bottom)
+		{
+			if(rootHeight>location[1])
+			{
+				LayoutParams parm=(LayoutParams) kScrollView.getLayoutParams();
+				parm.height=location[1];
+				yPosition=10;
+			}else
+			{
+				yPosition=top-location[1];
+			}
+			
+			
+		}else
+		{
+			if(rootHeight>bottom)
+			{
+				LayoutParams l=(LayoutParams) kScrollView.getLayoutParams();
+				l.height=bottom-10;
+				yPosition=location[1];
+			}else
+			{
+				yPosition=location[1];
+			}
+		}
+		showPopupAtPosition(xPosition,yPosition);
+		
 	}
-	public void setViewInPopup(View v)
+	public void showPopupAtPosition(int x1, int y1)
 	{
-		kRootView=v;
-		popup.setContentView(kRootView);
+		Log.d(MainActivity.KTAG,"calling final show at location");
+		showAtLocation(kRootView, Gravity.NO_GRAVITY, x1, y1);
 	}
 	
 

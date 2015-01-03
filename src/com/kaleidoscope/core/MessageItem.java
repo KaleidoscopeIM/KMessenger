@@ -1,10 +1,12 @@
 package com.kaleidoscope.core;
 
+import com.kaleidoscope.kmessenger.MainActivity;
 import com.kaleidoscope.kmessenger.R.drawable;
 
 import android.R.string;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -24,12 +26,14 @@ public class MessageItem {
 		this.icon=icon;
 		this.enterMSG=ET;
 		this.sendButton=btn;
+		Log.d(MainActivity.KTAG,"message item created");
 	}
 	public MessageItem(int ID ,String sendM ,String RecM )
 	{
 		this.msgID=ID;
 		this.sentMSG=sendM;
 		this.receivedMSG=RecM;
+		Log.d(MainActivity.KTAG,"message item created");
 	}
 	public String getSentMSG()
 	{
