@@ -6,45 +6,63 @@ import com.kaleidoscope.kmessenger.R;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.opengl.Visibility;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MessagePopupWindow extends PopupWindow{
+public class MessagePopupWindow{
 	
-	private Context contextPopup;
-	private Drawable background=null;
 	protected View kRootView;
-	private TextView kUserName;
-	private ScrollView kScrollView;
-	private LinearLayout kMSGContainer=null;
-	private EditText kEnterMSG;
-	private Button kButtonSend;
+	protected TextView kUserName;
+	protected ScrollView kScrollView;
+	protected LinearLayout kMSGContainer=null;
+	protected EditText kEnterMSG;
+	protected Button kButtonSend;
+	protected ImageView imageUP;
+	protected ImageView imageDOWN;
+	protected PopupWindow popUP;
 	
 	public MessagePopupWindow(Context con)
 	{
 		Log.d(MainActivity.KTAG,"constructor of MessagePopupWindow");
 		
-		contextPopup=con;
 		kRootView =MainActivity.layoutInflatorMain.inflate(R.layout.container, null);
 		kUserName=(TextView) kRootView.findViewById(R.id.userName);
 		kScrollView=(ScrollView) kRootView.findViewById(R.id.scrollView);
 		kMSGContainer=(LinearLayout) kRootView.findViewById(R.id.msgContainer);
 		kEnterMSG=(EditText) kRootView.findViewById(R.id.editTextMSG);
 		kButtonSend=(Button) kRootView.findViewById(R.id.buttonSend);
+		imageUP=(ImageView)kRootView.findViewById(R.id.image_up);
+		imageDOWN=(ImageView)kRootView.findViewById(R.id.image_down);
+		
+		popUP=new PopupWindow(con);
 		
 		init();
 		
+	}
+	public void addMSG(TextView item, int pos)
+	{
+		if(kMSGContainer!=null)
+		{
+			kMSGContainer.addView(item, pos);
+			Log.d(MainActivity.KTAG,"successfully added msg in contaner");
+		}
+		else
+			Log.d(MainActivity.KTAG,"kMSGContainer is null");
 	}
 	public void preShow()
 	{
@@ -58,13 +76,13 @@ public class MessagePopupWindow extends PopupWindow{
 			Log.d(MainActivity.KTAG,"cannnot create a popup");
 			//return;
 		}else{
-			setBackgroundDrawable(new BitmapDrawable());
-			setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
-			setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-			setFocusable(true);
-			setTouchable(true);
-			setOutsideTouchable(true);
-			setContentView(kRootView);
+			popUP.setBackgroundDrawable(new BitmapDrawable());
+			popUP.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
+			popUP.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+			popUP.setFocusable(true);
+			popUP.setTouchable(true);
+			popUP.setOutsideTouchable(true);
+			popUP.setContentView(kRootView);
 			
 			Log.d(MainActivity.KTAG,"init method done");
 		}
@@ -73,75 +91,12 @@ public class MessagePopupWindow extends PopupWindow{
 	{
 		
 	}
-	public void dismiss()
-	{/*if(popup!=null)
-		{
-			popup.dismiss();
-		}*/
-	}
 	
-	public void addMSG(TextView item, int pos)
-	{
-		if(kMSGContainer!=null)
-		{
-			kMSGContainer.addView(item, pos);
-			Log.d(MainActivity.KTAG,"successfully added msg in contaner");
-		}
-		else
-			Log.d(MainActivity.KTAG,"kMSGContainer is null");
-	}
 	
-	public void showPopup(int[] location) {
-		
-		Log.d(MainActivity.KTAG,"inside method showPopUP");
-		int xPosition,yPosition;
-		 
-		kRootView.measure(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		int screenHeight=MainActivity.windowManagerMain.getDefaultDisplay().getHeight();
-		int screenWidth=MainActivity.windowManagerMain.getDefaultDisplay().getWidth();
-		int rootHeight=kRootView.getMeasuredHeight();
-		int rootWidth=kRootView.getMeasuredWidth();
-		if(location[0]+rootWidth>screenWidth)
-		{
-			xPosition=screenWidth-location[0];
-		}else
-		{
-			xPosition=location[0];
-		}
-		int top=location[1];
-		int bottom=screenHeight-location[1];
-		if(top>bottom)
-		{
-			if(rootHeight>location[1])
-			{
-				LayoutParams parm=(LayoutParams) kScrollView.getLayoutParams();
-				parm.height=location[1];
-				yPosition=10;
-			}else
-			{
-				yPosition=top-location[1];
-			}
-			
-			
-		}else
-		{
-			if(rootHeight>bottom)
-			{
-				LayoutParams l=(LayoutParams) kScrollView.getLayoutParams();
-				l.height=bottom-10;
-				yPosition=location[1];
-			}else
-			{
-				yPosition=location[1];
-			}
-		}
-		showPopupAtPosition(xPosition,yPosition);
-		
-	}
 	public void showPopupAtPosition(int x1, int y1)
 	{
 		Log.d(MainActivity.KTAG,"calling final show at location");
-		showAtLocation(kRootView, Gravity.NO_GRAVITY, x1, y1);
+		popUP.showAtLocation(kRootView, Gravity.NO_GRAVITY, x1, y1);
 	}
 	
 
