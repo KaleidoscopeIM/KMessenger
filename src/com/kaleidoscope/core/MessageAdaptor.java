@@ -14,12 +14,15 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +51,7 @@ public class MessageAdaptor extends MessagePopupWindow implements OnDismissListe
 		receivedMSG=message.getReceivedMSG();
 		userID=message.getID();
 		kMessage=new TextView(kContext);
+		kMessage.setPadding(5, 0, 5, 0);
 		if(sentMSG!=null || receivedMSG!=null)
 		{
 			if(sentMSG !=null)
@@ -86,6 +90,10 @@ public class MessageAdaptor extends MessagePopupWindow implements OnDismissListe
 		{
 			xPosition=location[0]/2;
 		}
+		if(xPosition<0)
+		{
+			xPosition=0;
+		}
 		int top=location[1];
 		int bottom=screenHeight-location[1];
 		if(top>bottom)
@@ -100,9 +108,10 @@ public class MessageAdaptor extends MessagePopupWindow implements OnDismissListe
 				yPosition=top-location[1];
 			}
 			imageDOWN.setVisibility(View.VISIBLE);
-			imageDOWN.setLeft(location[0]);
+			imageDOWN.setLeft(50);
+			imageDOWN.setLeft(100);
 			ViewGroup.MarginLayoutParams lp=(ViewGroup.MarginLayoutParams)imageDOWN.getLayoutParams();
-			lp.leftMargin=location[0];
+			lp.leftMargin=location[0]-23;
 			imageDOWN.setLayoutParams(lp);
 			
 		}else
@@ -123,6 +132,8 @@ public class MessageAdaptor extends MessagePopupWindow implements OnDismissListe
 		showPopupAtPosition(xPosition,yPosition);
 		
 	}
+	
+
 	@Override
 	public void onDismiss() {
 		// TODO Auto-generated method stub
